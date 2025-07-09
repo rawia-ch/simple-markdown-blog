@@ -1,4 +1,4 @@
-import AuthButton from "@/components/auth-button";
+import AuthButton from "@/components/ui/auth-button";
 import { Button } from "@/components/ui/button";
 import PostCard from "@/components/ui/post-card";
 import { PlusCircle } from "lucide-react";
