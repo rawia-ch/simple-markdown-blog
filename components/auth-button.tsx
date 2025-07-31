@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button } from "./button";
+import { Button } from "./ui/button";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 import {
@@ -24,7 +24,7 @@ export default function AuthButton() {
   }
   if (!session) {
     return (
-      <Button onClick={() => signIn("google")} variant="outline">
+      <Button onClick={() => signIn("google")} variant="outline" className="font-sans">
         Sign In
       </Button>
     );
@@ -43,7 +43,7 @@ export default function AuthButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuItem className="font-normal">
+        <DropdownMenuItem className="font-sans">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
               {session.user?.name}
@@ -53,7 +53,7 @@ export default function AuthButton() {
             </p>
           </div>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => signOut()}>Sign out</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut()} className="font-sans">Sign out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
