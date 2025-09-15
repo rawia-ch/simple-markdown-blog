@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { requireAdmin } from "@/lib/utils/auth";
 
-// GET /api/posts/[id] - Récupérer un post spécifique
 export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const params = await context.params;
@@ -32,7 +31,6 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
   }
 }
 
-// PUT /api/posts/[id] - Mettre à jour un post
 export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   await requireAdmin();
 
@@ -90,7 +88,6 @@ export function OPTIONS() {
   return NextResponse.json({}, { status: 200 });
 }
 
-// DELETE /api/posts/[id] - Supprimer un post
 export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   await requireAdmin();
 
