@@ -1,25 +1,51 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+type Context = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export async function GET(
+  req: NextRequest,
+  context: Context
+) {
+  const { slug } = await context.params;
 
   try {
     const post = await prisma.post.findUnique({
       where: { slug },
       include: {
-        author: { select: { name: true, image: true } },
-        _count: { select: { comments: true, likes: true } },
+        author: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+            likes: true,
+          },
+        },
       },
     });
 
     if (!post) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    return NextResponse.json(post);
+    const postSerialized = {
+      ...post,
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString(),
+      expiresOn: post.expiresOn ? post.expiresOn.toISOString() : null,
+    };
+
+    return NextResponse.json(postSerialized);
   } catch (error) {
-    console.error("Failed to fetch post by slug:", error);
-    return NextResponse.json({ error: "Failed to fetch post" }, { status: 500 });
+    console.error('Error fetching post:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { requireAdmin } from "@/lib/utils/auth";
 
-// GET all published posts
+
 export async function GET() {
   try {
     const posts = await prisma.post.findMany({
@@ -22,7 +22,6 @@ export async function GET() {
   }
 }
 
-// CREATE a post with imageUrl already provided
 export async function POST(request: NextRequest) {
   await requireAdmin();
 
@@ -42,7 +41,7 @@ export async function POST(request: NextRequest) {
   let body;
   try {
     body = await request.json();
-    console.log("Request body:", body); // Ajouter un log
+    console.log("Request body:", body);
   } catch (error) {
     console.error("Invalid request body:", error);
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
@@ -51,7 +50,7 @@ export async function POST(request: NextRequest) {
   const { title, content, tags, imageUrl, published, expiresOn } = body;
 
   if (!title || !content || !imageUrl) {
-    console.log("Missing required fields:", { title, content, imageUrl }); // Log des champs manquants
+    console.log("Missing required fields:", { title, content, imageUrl }); 
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
@@ -81,7 +80,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(post);
   } catch (err) {
-    console.error("Post creation failed:", err); // Log de l'erreur
+    console.error("Post creation failed:", err); 
     return NextResponse.json({ error: "Post creation failed", details: err instanceof Error ? err.message : "Unknown error" }, { status: 500 });
   }
 }

@@ -68,12 +68,13 @@ export default function CommentSection({ postId }: { postId: string }) {
       {session && (
         <form onSubmit={handleSubmit} className="space-y-4">
           <Textarea
+          className="font-sans"
             placeholder="Write a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             rows={3}
           />
-          <Button type="submit" disabled={loading || !newComment.trim()}>
+          <Button className="font-sans" type="submit" disabled={loading || !newComment.trim()}>
             {loading ? "Posting..." : "Post Comment"}
           </Button>
         </form>
@@ -93,7 +94,7 @@ export default function CommentSection({ postId }: { postId: string }) {
                 <div className="flex-1">
                   <div className="flex items-center space-x-2">
                     <p className="text-sm font-medium">{comment.author.name}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground font-sans">
                       {new Date(comment.createdAt).toLocaleDateString()}
                     </p>
                   </div>

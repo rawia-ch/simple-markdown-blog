@@ -45,9 +45,11 @@ function UploadImage({ onUpload }: { onUpload: (url: string) => void }) {
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="image">Upload Image</Label>
+      <Label htmlFor="image" className="font-sans text-sm sm:text-base">
+        Upload Image
+      </Label>
       <Input type="file" accept="image/*" onChange={handleImageUpload} />
-      {uploading && <p>Uploading...</p>}
+      {uploading && <p className="text-xs sm:text-sm">Uploading...</p>}
     </div>
   );
 }
@@ -95,7 +97,7 @@ export default function CreatePostPage() {
           imageUrl,
           published,
           tags: tagsArray,
-          expiresOn, // Ajouter expiresOn à la requête
+          expiresOn,
         }),
       });
 
@@ -130,18 +132,24 @@ export default function CreatePostPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b">
-        <div className="container mx-auto px-4 py-4">
-          <a href="/" className="flex items-center gap-2">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <a href="/" className="flex items-center gap-2 text-sm sm:text-base font-sans">
             <ArrowLeft className="h-4 w-4 mr-2" /> Back to Home
           </a>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold">Create New Post</h1>
-            <Button variant="outline" onClick={() => setPreview(!preview)}>
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-6xl lg:max-w-7xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center sm:text-left">
+              Create New Post
+            </h1>
+            <Button
+              variant="outline"
+              onClick={() => setPreview(!preview)}
+              className="w-full sm:w-auto"
+            >
               <Eye className="h-4 w-4 mr-2" />
               {preview ? "Edit" : "Preview"}
             </Button>
@@ -152,9 +160,11 @@ export default function CreatePostPage() {
           <div
             className={`grid grid-cols-1 ${preview ? "lg:grid-cols-2 gap-8" : ""}`}
           >
-            <Card>
+            <Card className="w-full">
               <CardHeader>
-                <CardTitle>Post Form</CardTitle>
+                <CardTitle className="text-lg sm:text-xl font-bold">
+                  Promotion Form
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -176,18 +186,22 @@ export default function CreatePostPage() {
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       placeholder="Write your post..."
-                      rows={20}
+                      rows={12}
                       required
-                      className="min-h-80"
+                      className="min-h-40 sm:min-h-60"
                     />
                   </div>
 
                   <UploadImage onUpload={(url) => setImageUrl(url)} />
                   {imageUrl && (
-                    <img src={imageUrl} alt="Preview" className="w-32 rounded" />
+                    <img
+                      src={imageUrl}
+                      alt="Preview"
+                      className="w-full max-w-xs rounded object-cover"
+                    />
                   )}
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 pb-2">
                     <Label htmlFor="tags">Tags (comma-separated)</Label>
                     <Input
                       id="tags"
@@ -217,28 +231,44 @@ export default function CreatePostPage() {
                     <Label htmlFor="published">Publish immediately</Label>
                   </div>
 
-                  <Button type="submit" disabled={loading} className="w-full font-sans">
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full font-sans"
+                  >
                     {loading ? "Creating..." : "Publish Post"}
                   </Button>
                 </form>
               </CardContent>
             </Card>
 
+            {/* === Preview === */}
             {preview && (
-              <Card>
+              <Card className="w-full">
                 <CardHeader>
-                  <CardTitle>Preview</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl font-bold">
+                    Preview
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <h2 className="text-2xl font-bold">{title || "Post Title"}</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">
+                      {title || "Post Title"}
+                    </h2>
                     {imageUrl && (
-                      <img src={imageUrl} alt="Preview" className="rounded" />
+                      <img
+                        src={imageUrl}
+                        alt="Preview"
+                        className="rounded max-w-full h-auto"
+                      />
                     )}
                     <MarkdownRenderer content={content || "Post content..."} />
-                    <div className="mt-4">{renderTags()}</div>
+                    <div className="mt-4 flex flex-wrap gap-2">{renderTags()}</div>
                     {expiresOn && (
-                      <p className="text-green-500">Expires On: {new Date(expiresOn).toLocaleDateString()}</p>
+                      <p className="text-green-500 text-sm sm:text-base">
+                        Expires On:{" "}
+                        {new Date(expiresOn).toLocaleDateString()}
+                      </p>
                     )}
                   </div>
                 </CardContent>

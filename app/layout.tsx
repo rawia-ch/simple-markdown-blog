@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Sansita_Swashed } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 const sansita = Sansita_Swashed({
   weight: ["400", "700"],
@@ -39,6 +40,7 @@ export default function RootLayout({
         className={` ${sansita.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>{children}</Providers>
+        <Toaster position="top-right" />
       </body>
     </html>
   );

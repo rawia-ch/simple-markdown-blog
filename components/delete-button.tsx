@@ -2,58 +2,83 @@
 
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { Trash2Icon } from "lucide-react";
+import toast from "react-hot-toast";
+import * as React from "react";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 export default function DeleteButton({
   postId,
   onDeleted,
 }: {
   postId: string;
-  onDeleted?: (id: string) => void; // Rendu optionnel
+  onDeleted?: (id: string) => void;
 }) {
   const { data: session } = useSession();
-  const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
-  // Si pas admin, on n'affiche pas le bouton
   if (session?.user?.role !== "ADMIN") return null;
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this post?")) return;
-
+    setLoading(true);
     try {
-      const res = await fetch(`/api/posts/${postId}`, {
-        method: "DELETE",
-      });
-
-      let data = null;
-      try {
-        data = await res.json();
-      } catch (err) {
-        console.warn("No JSON returned from DELETE");
-      }
+      const res = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
+      const data = await res.json();
 
       if (!res.ok) {
-        alert(data?.error || "Failed to delete post");
+        toast.error(data?.error || "Failed to delete post");
+        setLoading(false);
         return;
       }
 
-      // Si onDeleted est passé, on l'appelle
+      toast.success(data?.message || "Post deleted successfully!");
+      setOpen(false);
       if (onDeleted) {
         onDeleted(postId);
-      } else {
-        router.refresh(); // Sinon on rafraîchit la page
       }
-    } catch (error) {
-      console.error("Error deleting post:", error);
-      alert("An error occurred while deleting the post.");
+
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while deleting the post.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Button variant="destructive" className="font-sans" onClick={handleDelete}>
-      <Trash2Icon className="h-4 w-4 mr-2" />
-      Delete
-    </Button>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive" className="font-sans">
+          <Trash2Icon className="h-4 w-4 mr-2" />
+          Delete
+        </Button>
+      </AlertDialogTrigger>
+
+      <AlertDialogContent className="font-sans">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete the post from the server.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDelete} disabled={loading}>
+            {loading ? "Deleting..." : "Yes, delete it"}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

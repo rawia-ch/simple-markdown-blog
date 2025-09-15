@@ -94,3 +94,19 @@ model Like {
 
   @@unique([postId, userId])
 }
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  message   String
+  deals     String?
+  createdAt DateTime @default(now())
+}

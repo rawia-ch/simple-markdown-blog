@@ -17,7 +17,7 @@ export default function AuthButton() {
 
   if (status === "loading") {
     return (
-      <Button variant="ghost" disabled>
+      <Button variant="ghost" disabled className="font-sans">
         Loading...
       </Button>
     );
@@ -32,8 +32,8 @@ export default function AuthButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full bg-amber-100">
+          <Avatar className="h-8 w-8 ">
             <AvatarImage
               src={session.user?.image || ""}
               alt={session.user?.name || ""}

@@ -1,13 +1,13 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
-import prisma from "./prisma";
+import  prisma  from "./prisma";
 import type { NextAuthOptions } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      role: string;
+      role?: string;
       name?: string | null;
       email?: string | null;
       image?: string | null;
