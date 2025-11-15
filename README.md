@@ -146,20 +146,7 @@ To learn more about Next.js, take a look at the following resources:
 | 3    | Admin access, promotion editor                          |
 | 4    | Cloudinary integration, UI polish, deployment           |
 
----
 
-## Deployment Plan
-
-| Component       | Platform        |
-|-----------------|-----------------|
-| **Frontend/API** | Vercel          |
-| **Database**     | Railway / Supabase |
-| **File Storage** | Cloudinary      |
-| **Domain**       | Route 53 (`xpresdeals.com`) |
-
----
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
 ### Deploy on Vercel
 
