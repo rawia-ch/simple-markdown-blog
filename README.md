@@ -43,9 +43,9 @@ To learn more about Next.js, take a look at the following resources:
 
 | Layer        | Technology         | Notes                                           |
 |--------------|--------------------|------------------------------------------------|
-| **Frontend** | Next.js (App Router) | SEO-friendly, fast routing, public content     |
+| **Frontend** | Next.js (App Router)| SEO-friendly, fast routing, public content     |
 | **Backend**  | Next.js API Routes | Lightweight CRUD backend                       |
-| **Database** | PostgreSQL + Prisma | Structured data, reliable for promotions       |
+| **Database** | Neon + Prisma      | Structured data, reliable for promotions       |
 | **Auth**     | NextAuth.js        | Email/password login for Visioad staff only    |
 | **Storage**  | Cloudinary         | Secure image hosting for promotions            |
 | **Hosting**  | Vercel             | Frontend + API deployment                      |
